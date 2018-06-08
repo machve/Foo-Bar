@@ -1,39 +1,60 @@
 "use strict"
-let json;
-let data;
-// let data = FooBar.getData();
-// let jsonData = JSON.parse(data);
-// let bartenders = jsonData.bartenders;
-// let beers = jsonData.beertypes;
-// let queue = jsonData.queue;
-// let taps = jsonData.taps;
-// let serving = jsonData.serving;
-// let storage = jsonData.storage;
-// const closingTime = jsonData.bar.closingTime;
-// // console.log(closingTime);
+
+let data = FooBar.getData();
+let json = JSON.parse(data)
+console.log(json)
+let beertypes = json.beertypes;
+let closingTime = json.bar.closingTime;
+let beerLabel = beertypes.name;
 
 
-// document.querySelector(".closing-time").textContent = closingTime;
+console.log(beertypes);
+let template = document.querySelector(".bar-template").content;
+let section = document.querySelector(".foo-bar-dashboard");
 
 
-function fetchData(){
-    data = FooBar.getData();
-    json = JSON.parse(data)
-  displayData(json);
 
-
-}
-function showNotChanging(json){
-const closingTime = json.bar.closingTime;
+// closing time 
 document.querySelector(".closing-time").textContent = closingTime;
-}
 
-function displayData(json){
+// showing beers
+beertypes.forEach(beer => {
+    let clone = template.cloneNode(true);
+    clone.querySelector(".beer-name").textContent = `${beer.name} (${beer.category}, ${beer.alc}%)`;
+    clone.querySelector(".beer-description-aroma").textContent = beer.description.aroma;
+    clone.querySelector(".beer-description-flavor").textContent = beer.description.flavor;
+    beerLabel = clone.querySelector(".beer-label").setAttribute("src", beer.label);
+    console.log(beer.label)
+    section.appendChild(clone);
 
-    console.log(json)
-}
+});
 
-setInterval(fetchData, 1000);
+
+// function fetchData(){
+
+
+// }
+
+
+
+// function displayData(json){
+//     const closingTime = json.bar.closingTime;
+//     document.querySelector(".closing-time").textContent = closingTime;
+// beertypes = json.beertypes;
+
+
+// beertypes.forEach(beer => {
+//     let clone = template.cloneNode(true);
+// clone.querySelector(".beer-name").textContent=beer.name;
+// section.appendChild(clone);
+
+// });
+
+
+//     console.log(json)
+// }
+
+// setInterval(fetchData, 1000);
 
 
 // bartenders.forEach(element => {
@@ -49,7 +70,7 @@ setInterval(fetchData, 1000);
 //     console.log(e)
 // })
 // storage.forEach(e => {console.log(e)
-    
+
 // });
 // queue.forEach(e => {
 //     console.log(e.startTime)
