@@ -1,0 +1,84 @@
+.sidenavigation {
+	height: 100%;
+	width: 200px;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	background-color: black;
+	overflow-x: hidden;
+	padding-top: 60px;
+}
+div#storage{
+	margin-left: 20%;
+}
+canvas#myChart.chartjs-render-monitor{
+	
+	height: 70% !important;
+	width: 70% !important;
+
+}
+
+canvas#myChart2.chartjs-render-monitor{
+	
+	height: 70% !important;
+	width: 70% !important;
+
+}
+
+.sidenavigation a {
+	color: white;
+	padding: 8px 8px 8px 32px;
+	text-decoration: none;
+	font-size: 25px;
+	display: block;
+}
+
+.title {
+	margin-left: 45%;
+}
+
+main {
+	margin-left: 240px;
+}
+
+.beer-section {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+}
+
+.beer-info {
+	margin-left: 50px;
+}
+
+button.view-more {
+	/* margin-left: 30px;
+	margin-bottom: 30px; */
+	position: absolute;
+}
+
+div.animate-div {
+	height: 50px;
+	margin: 10px;
+	width: 0;
+	transition: all 0.5s ease-out;
+	background-image: linear-gradient(to right top, #0ff1ce, #00e8cd, #00e0cb, #00d7c9, #00cec6);
+}
+
+img.beer-label {
+	width: 30%;
+}
+
+.hidden {
+	display: none;
+}
+
+.show {
+	display: block !important;
+}
+
+.dot {
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+}

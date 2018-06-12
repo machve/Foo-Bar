@@ -8,32 +8,93 @@
     <title>Foo bar</title>
     <link rel="stylesheet" href="style.css">
     <script src="http://petlatkea.dk/2018/front/foobar.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 </head>
 
 <body>
-    <h1>Foo Bar Dashboard</h1>
+    <h1 class="title">Foo Bar Dashboard</h1>
     <p class="closing-time"> </p>
+    <div class="sidenavigation">
+        <a href="#storage">Storage</a>
+        <a href="#taps">Taps</a>
+        <a href="#orders">Orders</a>
+        <a href="#bartenders">Bartenders</a>
+        <a href="#beers">Beers</a>
+    </div>
+    <main>
+
+        <h2>Storage status</h2>
+        <div class="container" id="storage">
+            <canvas id="myChart"></canvas>
+        </div>
+       
 
 
-    <section class="foo-bar-dashboard"></section>
-    <template class="bar-template">
+
+        <!-- bartenders and their status-->
+        <div id="bartenders">
+            <h2>Our lovely bartenders</h2>
+            <p class="bartender1"></p>
+            <p class="bartender2"></p>
+            <p class="bartender3"></p>
+        </div>
+ <!-- people in queue -->
+ <div id="queue">
+        <h2 class="people-queueing">Queue</h2>
+        <p class="number-queue"></p>
+        <div class="animate-div" id="queue"></div>
+    </div>
 
 
 
+        <!-- types of beer on tap now -->
+        <div id="taps">
+            <h2>What do we have on taps?</h2>
+            <p class="tap1 hidden"></p>
+            <p class="tap2 hidden"></p>
+            <p class="tap3 hidden"></p>
+            <p class="tap4 hidden"></p>
+            <p class="tap5 hidden"></p>
+            <p class="tap6 hidden"></p>
+            <p class="tap7 hidden"></p>
 
-        <div id="beer-types">
-            <h3 class="beer-name"></h1>
-                <img class="beer-label" src="" alt="img-caption">
-                <p>Aroma:</p>
-                <p class="beer-description-aroma"></p>
-                <p>Flavor:</p>
-                <p class="beer-description-flavor"></p>
+        </div>
+
+        <!-- taps bar chart levels -->
+
+
+        <div class="container" id="tap-bar-chart">
+            <canvas id="myChart2"></canvas>
         </div>
 
 
+<h2 id="beers">Check out our beer selection</h2>
+        <!-- beer template  -->
+        
+        <section class="beer-section" ></section>
+        <template class="bar-template">
+            <div id="beer-types">
+                <article class="beer-info">
+                    <div class="basic-beer-info">
+                        <h3 class="beer-name"></h3>
+                        <img class="beer-label" src="" alt="img-caption">
+
+                        <button class="view-more">View more</button>
+                    </div>
+                    <div class="extra-beer-info hidden">
+                        <p class="appearance"></p>
+                        <p class="aroma"></p>
+                        <p class="flavour"></p>
+                        <p class="mouthfeel"></p>
+                        <p class="overall-impression"></p>
+                    </div>
+
+                </article>
+            </div>
+        </template>
 
 
-    </template>
+    </main>
     <script src="main.js"></script>
 </body>
 
