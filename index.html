@@ -7,49 +7,91 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Foo bar</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <script src="http://petlatkea.dk/2018/front/foobar.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 </head>
 
 <body>
-    <h1 class="title">Foo Bar Dashboard</h1>
-    <p class="closing-time"> </p>
-    <div class="sidenavigation">
-        <a href="#storage">Storage</a>
-        <a href="#taps">Taps</a>
-        <a href="#orders">Orders</a>
-        <a href="#bartenders">Bartenders</a>
-        <a href="#beers">Beers</a>
+
+    <div class="side-navigation">
+        <h1 class="title">Foo Bar Dashboard</h1>
+        <p class="closing-time"> </p>
+        <div class="nav-links">
+            <a href="#queue">Queue</a>
+            <a href="#orders">Orders</a>
+            <a href="#storage">Storage</a>
+
+            <a href="#taps">Taps</a>
+            <a href="#beer-levels">Tap levels</a>
+            <a href="#bartenders">Bartenders</a>
+            <a href="#beers">Beers</a>
+        </div>
     </div>
     <main>
 
-        <h2>Storage status</h2>
-        <div class="container" id="storage">
-            <canvas id="myChart"></canvas>
+        <!-- people in queue -->
+        <div id="queue">
+            <h2 class="people-queueing">Queue</h2>
+            <p class="number-queue"></p>
+
+
+            <div class="container">
+                <canvas id="myChart3"></canvas>
+            </div>
         </div>
-       
 
 
 
+        <div id="orders">
+
+            <div class="orders-grid">
+                <div>
+
+
+                    <h2>Orders in queue</h2>
+                    <div class="orders-waiting-in-queue">
+
+
+                    </div>
+                </div>
+
+                <template id="queue-template">
+                    <article class="queue-information">
+                        <p class="order"></p>
+
+                    </article>
+                </template>
+                <div>
+                    <h2>Orders being served</h2>
+                    <div class="in-serve">
+
+                    </div>
+                </div>
+
+                <template id="orders-served">
+                    <article class="in-serve-info">
+                        <p class="order-being-served"></p>
+
+                    </article>
+                </template>
+
+            </div>
+        </div>
         <!-- bartenders and their status-->
         <div id="bartenders">
             <h2>Our lovely bartenders</h2>
-            <p class="bartender1"></p>
-            <p class="bartender2"></p>
-            <p class="bartender3"></p>
+            <div class="bartenders-grid">
+                <p class="bartender1"></p>
+                <p class="bartender2"></p>
+                <p class="bartender3"></p>
+            </div>
         </div>
- <!-- people in queue -->
- <div id="queue">
-        <h2 class="people-queueing">Queue</h2>
-        <p class="number-queue"></p>
-        <div class="animate-div" id="queue"></div>
-    </div>
 
-
-
-        <!-- types of beer on tap now -->
+        <!-- types of beer on tap -->
         <div id="taps">
             <h2>What do we have on taps?</h2>
+            <p class="nothing-on-taps">At this moment we don't have anything on taps.</p>
             <p class="tap1 hidden"></p>
             <p class="tap2 hidden"></p>
             <p class="tap3 hidden"></p>
@@ -61,38 +103,56 @@
         </div>
 
         <!-- taps bar chart levels -->
-
-
-        <div class="container" id="tap-bar-chart">
-            <canvas id="myChart2"></canvas>
+        <div id="beer-levels">
+            <div class="container">
+                <canvas id="myChart2"></canvas>
+            </div>
         </div>
 
 
-<h2 id="beers">Check out our beer selection</h2>
-        <!-- beer template  -->
-        
-        <section class="beer-section" ></section>
-        <template class="bar-template">
-            <div id="beer-types">
-                <article class="beer-info">
-                    <div class="basic-beer-info">
-                        <h3 class="beer-name"></h3>
-                        <img class="beer-label" src="" alt="img-caption">
-
-                        <button class="view-more">View more</button>
-                    </div>
-                    <div class="extra-beer-info hidden">
-                        <p class="appearance"></p>
-                        <p class="aroma"></p>
-                        <p class="flavour"></p>
-                        <p class="mouthfeel"></p>
-                        <p class="overall-impression"></p>
-                    </div>
-
-                </article>
+        <!-- storage doughnut chart -->
+        <div id="storage">
+            <h2>Storage status</h2>
+            <div class="container">
+                <canvas id="myChart"></canvas>
             </div>
-        </template>
 
+        </div>
+
+
+
+
+
+        <div id="beers">
+            <h2>Check out our beer selection</h2>
+            <!-- beer template  -->
+
+            <section class="beer-section"></section>
+            <template class="bar-template">
+                <div id="beer-types">
+                    <article class="beer-info">
+                        <div class="basic-beer-info">
+                            <h3 class="beer-name"></h3>
+                            <img class="beer-label" src="" alt="img-caption">
+
+                            <button class="view-more">View more</button>
+                        </div>
+                        <div class="extra-beer-info hidden">
+                            <h3 class="beer-name-extra"></h3>
+                            <p>Appearance</p>
+                            <p class="appearance"></p>
+                            <p>Aroma</p>
+                            <p class="aroma"></p>
+                            <p>Mouthfeel</p>
+                            <p class="mouthfeel"></p>
+                            <p>Impression</p>
+                            <p class="overall-impression"></p>
+                        </div>
+
+                    </article>
+                </div>
+            </template>
+        </div>
 
     </main>
     <script src="main.js"></script>

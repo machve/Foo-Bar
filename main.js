@@ -5,28 +5,25 @@ window.addEventListener("load", getJson());
 //repeating data
 let dataRepeat;
 let jsonRepeat;
-let data;
-let json;
-let template;
-let parent;
+let orderTemplate;
+let orderParent;
 let serveTemplate;
 let serveParent;
-let clone;
 
 
-//storage 
+//storage variables
 let storageArray = [];
 let storageNumbers;
 let storage;
 let mapStorage;
 
-//variables taps
-
+//taps variables
 let taps;
 let tapLevel = [];
 let tapName = [];
 let tapEl;
-
+let tapInUse;
+let emptyTaps= document.querySelector(".nothing-on-taps");
 
 //tap bar chart
 let myBarChart;
@@ -34,16 +31,63 @@ let myBarChart;
 // doughnut storage chart
 let myDoughnutChart;
 
-//queue
+
+//queue variables
 let queue;
 let order;
+let queueArray = [];
+let queueLength;
+let queueDate = [];
 let queueAmount;
 let queueNumber = document.querySelector(".number-queue");
-let queueDiv = document.querySelector(".animate-div");
 
-//bartenders
+
+//bartenders variables
 let bartenders;
 let bartenderString;
+
+
+  //------------------------------LINE CHART FOR QUEUE-------------------------------------------
+
+let myLineChart = new Chart(myChart3, {
+    type: 'line',
+    data: {
+        labels: [],
+        datasets: [{
+            label: 'People waiting in the queue',
+            data: queueArray,
+            fill: false,
+            borderColor: "#00cec6",
+            backgroundColor: "#00e0cb"
+        }],
+        labels: queueDate
+    },
+    options: {
+
+        showLines: true,
+        scales: {
+            xAxes: [{
+                display: true,
+                ticks: {
+                    fontSize: 10,
+                    padding: 10,
+
+                }
+            }],
+            yAxes: [{
+                display: true,
+                ticks: {
+                    fontSize: 10,
+                    padding: 10,
+                    beginAtZero: true,
+                    stepSize: 1
+                }
+            }]
+        }
+    },
+
+})
+
 
 
 //updating data
@@ -53,21 +97,71 @@ function getUpdatingData() {
     jsonRepeat = JSON.parse(dataRepeat);
     console.log(jsonRepeat);
 
-
-    //queue
+  //------------------------------QUEUEU-------------------------------------------
     queue = jsonRepeat.queue;
-if (queue.length === 0){
-    ç
-}
-else if (queue.length === 1){
-    queueNumber.textContent = `Right now we have ${queue.length} person in the queue`;
-}
+
+    // checking amount of people in queue and displaying message accordingly
+    if (queue.length === 0) {
+        queueNumber.textContent = `There is nobody in queue`;
+    } else if (queue.length === 1) {
+        queueNumber.textContent = `Right now we have ${queue.length} person in the queue`;
+    }
     queueNumber.textContent = `Right now we have ${queue.length} persons in the queue.`;
-    queueDiv.style.width = (queue.length * 30 + "px")
-    
-   
-    //bartenders
+
+    // getting length of queue array for line graph
+    queueLength = queue.length;
+    queueArray.push(queueLength);
+    console.log(queueArray);
+
+    // getting date and time for when the queue is for line chart
+    queueDate.push(Date(queue.timestamp));
+    console.log(queueDate);
+
+    // updating line chart
+    myLineChart.update();
+
+
+    // getting orders and orders being served
+    function displayOrders() {
+
+        let data = FooBar.getData();
+        let json = JSON.parse(data);
+
+  //------------------------------ORDERS IN QUEUE-------------------------------------------
+        // queue template
+        orderTemplate = document.querySelector("#queue-template").content;
+        orderParent = document.querySelector(".orders-waiting-in-queue");
+
+        // clearing the space in template for necht items
+        orderParent.innerHTML = '';
+
+        // order id for each order and order items for each order
+        json.queue.forEach(orderNumber => {
+            let clone = orderTemplate.cloneNode(true);
+            clone.querySelector('.order').textContent = `Order n. ${(orderNumber.id + 1)} - ${orderNumber.order.join(", ")} `;
+            orderParent.appendChild(clone);
+        });
+  //------------------------------SERVED ORDERS-------------------------------------------
+        // serve template
+        serveTemplate = document.querySelector("#orders-served").content;
+        serveParent = document.querySelector(".in-serve");
+
+        // clearing space for served items
+        serveParent.innerHTML = '';
+
+        // served id for each order and served items for each order
+        json.serving.forEach(servedOrder => {
+            let clone = serveTemplate.cloneNode(true);
+            clone.querySelector('.order-being-served').textContent = `Order nr. ${(servedOrder.id + 1)} -  ${servedOrder.order.join(', ')}`;
+            serveParent.appendChild(clone);
+
+        })
+    }
+    displayOrders();
+
+  //------------------------------BARTENDERS-------------------------------------------
     bartenders = jsonRepeat.bartenders;
+    // checking status and displaying message accordingly
     bartenders.forEach((bartender, i) => {
         bartenderString = document.querySelector(".bartender" + (i + 1))
         if (bartender.status === "WORKING" && bartender.servingCustomer > 1) {
@@ -83,34 +177,14 @@ else if (queue.length === 1){
 
     })
 
-    //storage
+    //------------------------------STORAGE-------------------------------------------
 
     storage = jsonRepeat.storage;
-    console.log(storage)
-
+    // getting amount of beers in storage into an array
     storageArray = storage.map(x => x.amount)
-    console.log(storageArray);
 
 
-    //taps 
-    taps = jsonRepeat.taps;
-    console.log(taps)
-    tapLevel = taps.map(x => x.level)
-    tapName = taps.map(x => x.beer);
-    console.log(tapLevel)
-
-    taps.forEach((tap, i) => {
-        tapEl = document.querySelector(".tap" + (i + 1));
-        if (tap.inUse === true) {
-            tapEl.classList.remove("hidden");
-        } else {
-            tapEl.classList.add("hidden");
-        }
-        tapEl.textContent = `Right now you can get ${taps[i].beer} on tap n.${(taps[i].id+1)}`;
-
-    })
-
-    // amount of beers in storage
+    //------------------------------STORAGE CHART-------------------------------------------
 
     myDoughnutChart = new Chart(myChart, {
         type: 'doughnut',
@@ -165,14 +239,49 @@ else if (queue.length === 1){
         }
     });
 
-    // level of beers on tap
+    //------------------------------TAPS-------------------------------------------
+    taps = jsonRepeat.taps;
+    // getting level of beer and beer names into an array for graph
+    tapLevel = taps.map(x => x.level);
+    tapName = taps.map(x => x.beer);
+    tapInUse= taps.every(x => x.inUse === false);
+    console.log(tapInUse);
+
+    
+   
+
+    // checking what taps are in use and displaying accordingly
+    if (tapInUse===false){
+        emptyTaps.classList.add("hidden");
+    }
+    else {
+        emptyTaps.classList.remove("hidden");
+    }
+    
+    taps.forEach((tap, i) => {
+        tapEl = document.querySelector(".tap" + (i + 1));
+
+        if (tap.inUse === true) {
+            tapEl.classList.remove("hidden");
+
+        } else {
+            tapEl.classList.add("hidden");
+
+        }
+        tapEl.textContent = `Right now you can get ${taps[i].beer} on tap n.${(taps[i].id+1)}`;
+
+    })
+
+  //-----------------------------LEVEL OF BEERS ON TAP CHART-------------------------------------------
+
     myBarChart = new Chart(myChart2, {
         type: 'bar',
         data: {
 
             labels: ['0', '250', '500', '750', '1000', '1250', '1500', '1750', '2000', '2250', '2500'],
             datasets: [{
-                label: 'I do not know how to disable it',
+                label: 'level of beer',
+
                 data: tapLevel,
                 backgroundColor: [
                     '#7AFFAE',
@@ -192,7 +301,6 @@ else if (queue.length === 1){
         },
         options: {
 
-
             title: {
                 display: true,
                 text: 'Level of beer taps',
@@ -210,8 +318,6 @@ else if (queue.length === 1){
             legend: {
                 labels: {
                     // This more specific font property overrides the global property
-
-
                     fontSize: 20,
                     fontColor: 'black'
 
@@ -221,50 +327,57 @@ else if (queue.length === 1){
         }
     });
 
-
-
 }
 
 getUpdatingData();
 setInterval(getUpdatingData, 10000);
 
-
-
-
+//-----------------------------NOT REPEATING DATA-------------------------------------------
 
 function getJson() {
     let data = FooBar.getData();
     let json = JSON.parse(data)
     console.log(json)
+
     // closing time
     let closingTime = json.bar.closingTime;
-    document.querySelector(".closing-time").textContent = closingTime;
+    document.querySelector(".closing-time").textContent = `The bar is closing at ${closingTime}`;
 
-    // beers
+
+    //------------------------------BEERS-------------------------------------------
+
     let beertypes = json.beertypes;
-
     let beerLabel = beertypes.name;
     //template
     let template = document.querySelector(".bar-template").content;
     let section = document.querySelector(".beer-section");
+
     // showing beers
     beertypes.forEach(beer => {
         let clone = template.cloneNode(true);
         let extraBeerInfo = clone.querySelector(".extra-beer-info");
+        let beerInfo = clone.querySelector(".beer-info")
+
+        // beer title
         clone.querySelector(".beer-name").textContent = `${beer.name} (${beer.category}, ${beer.alc}%)`;
 
-        // clone.querySelector(".beer-description-impression").textContent = beer.description.overallImpression;
+        // img
         beerLabel = clone.querySelector(".beer-label").setAttribute("src", "images/" + beer.label);
 
-
+        // hidden beer info
+        clone.querySelector(".beer-name-extra").textContent = `${beer.name} (${beer.category}, ${beer.alc}%)`;
         clone.querySelector(".appearance").textContent = beer.description.appearance;
         clone.querySelector(".aroma").textContent = beer.description.aroma;
-        clone.querySelector(".flavour").textContent = beer.description.flavour;
         clone.querySelector(".mouthfeel").textContent = beer.description.mouthfeel;
         clone.querySelector(".overall-impression").textContent = beer.description.overallImpression;
 
         clone.querySelector(".view-more").addEventListener("click", () => {
             extraBeerInfo.classList.toggle("hidden");
+            beerInfo.classList.toggle("add-padding");
+        })
+
+        extraBeerInfo.addEventListener("click", () => {
+            extraBeerInfo.classList.add("hidden");
         })
 
         section.appendChild(clone);
