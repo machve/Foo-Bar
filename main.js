@@ -2,14 +2,14 @@
 //not repeating data
 window.addEventListener("load", getJson());
 
-//repeating data
+//repeating data 
 let dataRepeat;
 let jsonRepeat;
 let orderTemplate;
 let orderParent;
 let serveTemplate;
 let serveParent;
-
+let time;
 
 //storage variables
 let storageArray = [];
@@ -23,7 +23,7 @@ let tapLevel = [];
 let tapName = [];
 let tapEl;
 let tapInUse;
-let emptyTaps= document.querySelector(".nothing-on-taps");
+let emptyTaps = document.querySelector(".nothing-on-taps");
 
 //tap bar chart
 let myBarChart;
@@ -39,6 +39,7 @@ let queueArray = [];
 let queueLength;
 let queueDate = [];
 let queueAmount;
+let emptyQueue = document.querySelector(".empty-queue");
 let queueNumber = document.querySelector(".number-queue");
 
 
@@ -47,7 +48,7 @@ let bartenders;
 let bartenderString;
 
 
-  //------------------------------LINE CHART FOR QUEUE-------------------------------------------
+//------------------------------LINE CHART FOR QUEUE-------------------------------------------
 
 let myLineChart = new Chart(myChart3, {
     type: 'line',
@@ -58,13 +59,20 @@ let myLineChart = new Chart(myChart3, {
             data: queueArray,
             fill: false,
             borderColor: "#00cec6",
-            backgroundColor: "#00e0cb"
+            backgroundColor: "#00e0cb",
+
         }],
         labels: queueDate
     },
     options: {
 
         showLines: true,
+        legend: {
+            labels: {
+                // This more specific font property overrides the global property
+                fontColor: '#1e3264'
+            }
+        },
         scales: {
             xAxes: [{
                 display: true,
@@ -80,7 +88,15 @@ let myLineChart = new Chart(myChart3, {
                     fontSize: 10,
                     padding: 10,
                     beginAtZero: true,
-                    stepSize: 1
+                    stepSize: 1,
+                    fontColor: '#1e3264'
+                }
+            }],
+            xAxes: [{
+                display: true,
+                ticks: {
+                    fontSize: 10,
+                    fontColor: '#1e3264'
                 }
             }]
         }
@@ -97,25 +113,33 @@ function getUpdatingData() {
     jsonRepeat = JSON.parse(dataRepeat);
     console.log(jsonRepeat);
 
-  //------------------------------QUEUEU-------------------------------------------
+    //------------------------------QUEUEU-------------------------------------------
     queue = jsonRepeat.queue;
+
 
     // checking amount of people in queue and displaying message accordingly
     if (queue.length === 0) {
+        console.log("empty")
         queueNumber.textContent = `There is nobody in queue`;
+        emptyQueue.classList.remove("hidden");
+
     } else if (queue.length === 1) {
         queueNumber.textContent = `Right now we have ${queue.length} person in the queue`;
+        emptyQueue.classList.add("hidden");
+    } else if (queue.length > 1) {
+        queueNumber.textContent = `Right now we have ${queue.length} persons in the queue.`;
+        emptyQueue.classList.add("hidden")
     }
-    queueNumber.textContent = `Right now we have ${queue.length} persons in the queue.`;
 
     // getting length of queue array for line graph
     queueLength = queue.length;
     queueArray.push(queueLength);
-    console.log(queueArray);
+
 
     // getting date and time for when the queue is for line chart
-    queueDate.push(Date(queue.timestamp));
-    console.log(queueDate);
+    time = new Date();
+    queueDate.push(time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds());
+
 
     // updating line chart
     myLineChart.update();
@@ -127,7 +151,7 @@ function getUpdatingData() {
         let data = FooBar.getData();
         let json = JSON.parse(data);
 
-  //------------------------------ORDERS IN QUEUE-------------------------------------------
+        //------------------------------ORDERS IN QUEUE-------------------------------------------
         // queue template
         orderTemplate = document.querySelector("#queue-template").content;
         orderParent = document.querySelector(".orders-waiting-in-queue");
@@ -141,7 +165,7 @@ function getUpdatingData() {
             clone.querySelector('.order').textContent = `Order n. ${(orderNumber.id + 1)} - ${orderNumber.order.join(", ")} `;
             orderParent.appendChild(clone);
         });
-  //------------------------------SERVED ORDERS-------------------------------------------
+        //------------------------------SERVED ORDERS-------------------------------------------
         // serve template
         serveTemplate = document.querySelector("#orders-served").content;
         serveParent = document.querySelector(".in-serve");
@@ -159,20 +183,24 @@ function getUpdatingData() {
     }
     displayOrders();
 
-  //------------------------------BARTENDERS-------------------------------------------
+    //------------------------------BARTENDERS-------------------------------------------
     bartenders = jsonRepeat.bartenders;
+
     // checking status and displaying message accordingly
     bartenders.forEach((bartender, i) => {
+        console.log(bartenders[i].status)
         bartenderString = document.querySelector(".bartender" + (i + 1))
-        if (bartender.status === "WORKING" && bartender.servingCustomer > 1) {
-
-            bartenderString.textContent = `Bartender ${bartenders[i].name} is serving ${bartenders[i].servingCustomer} customers.`;
-        } else if (bartender.status === "WORKING" && bartender.servingCustomer === 1) {
+        if (bartender.status === "WORKING" && bartender.servingCustomer === 1) {
 
             bartenderString.textContent = `Bartender ${bartenders[i].name} is serving ${bartenders[i].servingCustomer} customer.`;
+
+        } else if (bartender.status === "WORKING" && bartender.servingCustomer > 1) {
+
+            bartenderString.textContent = `Bartender ${bartenders[i].name} is serving ${bartenders[i].servingCustomer} customers.`;
+
         } else if (bartender.status === "READY") {
 
-            bartenderString.textContent = `Bartender ${bartenders[i].name} is getting ready for his shift.`
+            bartenderString.textContent = `Bartender ${bartenders[i].name} is ready for another customer.`
         }
 
     })
@@ -224,7 +252,7 @@ function getUpdatingData() {
             title: {
                 display: true,
                 text: 'Beers in storage',
-                fontColor: 'black',
+                fontColor: '#1e3264',
                 fontSize: 25
             },
             legend: {
@@ -232,7 +260,7 @@ function getUpdatingData() {
                 labels: {
                     // This more specific font property overrides the global property
                     fontSize: 20,
-                    fontColor: 'black'
+                    fontColor: '#1e3264'
                 }
             }
 
@@ -244,20 +272,20 @@ function getUpdatingData() {
     // getting level of beer and beer names into an array for graph
     tapLevel = taps.map(x => x.level);
     tapName = taps.map(x => x.beer);
-    tapInUse= taps.every(x => x.inUse === false);
+    // checking if all taps are not in use
+    tapInUse = taps.every(x => x.inUse === false);
     console.log(tapInUse);
 
-    
-   
+
+
 
     // checking what taps are in use and displaying accordingly
-    if (tapInUse===false){
+    if (tapInUse === false) {
         emptyTaps.classList.add("hidden");
-    }
-    else {
+    } else {
         emptyTaps.classList.remove("hidden");
     }
-    
+
     taps.forEach((tap, i) => {
         tapEl = document.querySelector(".tap" + (i + 1));
 
@@ -272,7 +300,7 @@ function getUpdatingData() {
 
     })
 
-  //-----------------------------LEVEL OF BEERS ON TAP CHART-------------------------------------------
+    //-----------------------------LEVEL OF BEERS ON TAP CHART-------------------------------------------
 
     myBarChart = new Chart(myChart2, {
         type: 'bar',
@@ -305,12 +333,19 @@ function getUpdatingData() {
                 display: true,
                 text: 'Level of beer taps',
                 fontSize: 25,
-                fontColor: 'black'
+                fontColor: '#1e3264'
             },
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        fontColor: '#1e3264'
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+
+                        fontColor: '#1e3264'
                     }
                 }]
             },
@@ -319,7 +354,7 @@ function getUpdatingData() {
                 labels: {
                     // This more specific font property overrides the global property
                     fontSize: 20,
-                    fontColor: 'black'
+                    fontColor: '#1e3264'
 
                 }
             }

@@ -1,6 +1,7 @@
 body {
 	font-family: 'Roboto', sans-serif;
 	background-color: #F8F8F8;
+	color: #1e3264;
 }
 
 main {
@@ -17,6 +18,7 @@ main {
 
 .title,
 .closing-time {
+	color: white;
 	text-align: center;
 }
 
@@ -29,13 +31,15 @@ main {
 	z-index: 1;
 	top: 0;
 	left: 0;
-	background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+	/* background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%); */
+	/* background-color: #0ff1ce; */
+	background-color: #1e3264;
 	overflow-x: hidden;
 	padding-top: 60px;
 }
 
 .side-navigation a {
-	color: black;
+	color:   white;
 	padding-left: 40px;
 	padding-top: 5px;
 	text-decoration: none;
@@ -71,7 +75,6 @@ canvas#myChart3.chartjs-render-monitor {
 	position: absolute;
 	background-color: white; */
 }
-
 .bartenders-grid {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
@@ -108,6 +111,7 @@ button.view-more {
 	position: absolute;
 	margin-left: 30px;
 	margin-top: 20px;
+	transition: all 0.4s ease 0s;
 }
 
 button.view-more:hover {
@@ -119,10 +123,11 @@ button.view-more:hover {
 
 img.beer-label {
 	width: 40%;
+
 }
 
 div#beer-types {
-	border: solid 0.5px #00e0cb;
+	border: solid 0.5px #1e3264;
 	margin: 5px;
 	height: 250px;
 	padding-top: 20px;
@@ -133,6 +138,7 @@ div#beer-types {
 #orders .orders-grid {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
+	grid-gap: 100px;
 }
 
 /* DIVS FOR EACH SECTION */
@@ -144,9 +150,9 @@ div#storage,
 #taps,
 #beer-levels,
 #beers {
-	margin: 10px;
+	margin: 20px;
 	padding: 10px 20px 20px 20px;
-	border: solid 1px #84fab0;
+	border: solid 1px #1e3264;
 	background: white;
 	transition: all 0.5s ease-out;
 }
