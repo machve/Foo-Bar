@@ -246,10 +246,10 @@ function getUpdatingData() {
         options: {
             cutoutPercentage: 50,
             title: {
-                display: true,
-                text: 'Beers in storage',
-                fontColor: '#1e3264',
-                fontSize: 25
+                display: false,
+                // text: 'Beers in storage',
+                // fontColor: '#1e3264',
+                // fontSize: 25
             },
             legend: {
                 position: 'right',
@@ -326,10 +326,8 @@ function getUpdatingData() {
         options: {
 
             title: {
-                display: true,
-                text: 'Level of beer taps',
-                fontSize: 25,
-                fontColor: '#1e3264'
+                display: false,
+             
             },
             scales: {
                 yAxes: [{
