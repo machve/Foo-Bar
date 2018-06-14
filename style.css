@@ -1,6 +1,6 @@
 body {
 	font-family: 'Roboto', sans-serif;
-	background-color: #F8F8F8;
+	background-color: 	#E8E8E8;
 	color: #1e3264;
 }
 
@@ -40,8 +40,8 @@ main {
 
 .side-navigation a {
 	color:   white;
-	padding-left: 40px;
-	padding-top: 5px;
+	padding-left: 45px;
+	padding-top: 10px;
 	text-decoration: none;
 	font-size: 19px;
 	display: block;
@@ -64,17 +64,8 @@ canvas#myChart3.chartjs-render-monitor {
 
 /* BEER SECTION */
 
-.beer-info {
-	/* padding-top: 10px;
-	transition: all 0.5s ease-out; */
-}
 
-.add-padding {
-	/* padding-top: 20px;
-	z-index: 1;
-	position: absolute;
-	background-color: white; */
-}
+
 .bartenders-grid {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
@@ -103,11 +94,14 @@ canvas#myChart3.chartjs-render-monitor {
 
 button.view-more {
 	text-transform: uppercase;
-	background: #00e0cb;
+	
+	
 	padding: 15px;
+	background: #1e3264;
 	border-radius: 5px;
 	display: inline-block;
 	border: none;
+	color: white;
 	position: absolute;
 	margin-left: 30px;
 	margin-top: 20px;
@@ -115,10 +109,14 @@ button.view-more {
 }
 
 button.view-more:hover {
-	background: #84fab0;
+	/* background: #84fab0; */
+	background: white;
+	border: 1px solid #1e3264;
 	letter-spacing: 1px;
 	box-shadow: 5px 40px -10px rgba(0, 0, 0, 0.57);
 	transition: all 0.4s ease 0s;
+	color: #1e3264;
+	
 }
 
 img.beer-label {
@@ -152,19 +150,20 @@ div#storage,
 #beers {
 	margin: 20px;
 	padding: 10px 20px 20px 20px;
-	border: solid 1px #1e3264;
+
 	background: white;
-	transition: all 0.5s ease-out;
+	transition: all 0.3s ease-out;
 }
 
-#storage:hover,
-#bartenders:hover,
-#queue:hover,
-#orders:hover,
-#taps:hover,
-#beer-levels:hover,
-#beers:hover {
-	border: solid 2px #00e0cb;
-}
 
+p.appearance, p.aroma, p.mouthfeel, p.overall-impression {
+	width: 80%;
+	margin-left: 50px;
+	margin-top:-10px;
+}
+.beer-desc, .beer-name-extra{
+	
+	font-weight: bold;
+	margin-left: 50px;
+}
 /* button */

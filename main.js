@@ -113,7 +113,7 @@ function getUpdatingData() {
     jsonRepeat = JSON.parse(dataRepeat);
     console.log(jsonRepeat);
 
-    //------------------------------QUEUEU-------------------------------------------
+    //------------------------------QUEUE-------------------------------------------
     queue = jsonRepeat.queue;
 
 
@@ -190,17 +190,13 @@ function getUpdatingData() {
     bartenders.forEach((bartender, i) => {
         console.log(bartenders[i].status)
         bartenderString = document.querySelector(".bartender" + (i + 1))
-        if (bartender.status === "WORKING" && bartender.servingCustomer === 1) {
+        if (bartender.status === "WORKING" && bartender.servingCustomer >= 1) {
 
-            bartenderString.textContent = `Bartender ${bartenders[i].name} is serving ${bartenders[i].servingCustomer} customer.`;
-
-        } else if (bartender.status === "WORKING" && bartender.servingCustomer > 1) {
-
-            bartenderString.textContent = `Bartender ${bartenders[i].name} is serving ${bartenders[i].servingCustomer} customers.`;
+            bartenderString.textContent = `${bartenders[i].name} is serving customer n. ${bartenders[i].servingCustomer}`;
 
         } else if (bartender.status === "READY") {
 
-            bartenderString.textContent = `Bartender ${bartenders[i].name} is ready for another customer.`
+            bartenderString.textContent = `${bartenders[i].name} is ready for another customer.`
         }
 
     })
